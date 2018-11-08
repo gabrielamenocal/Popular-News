@@ -43,7 +43,8 @@ axios.get("https://www.nytimes.com/section/technology").then(function(response) 
     var link = $(element).children().attr("href");
     resultsNYtimes.push({
       title: title,
-      link: link
+      link: link,
+      source:"nytimes"
     });
   });
   console.log("New York Times: \n" + resultsNYtimes);
@@ -61,7 +62,8 @@ axios.get("https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0
     var link = $(element).attr("href");
     resultsGoogle.push({
       title: title,
-      link: link
+      link: link,
+      source: "googlenews"
     });
   });
   console.log("Google Results: \n" + resultsGoogle);
