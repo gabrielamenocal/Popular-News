@@ -38,25 +38,38 @@
   <body>
     <div id="wrapper">
       <h1>Technology at your reach</h1>
-      <h2><i>The latest technologoes News!</i></h2>
-
-      <!-- <form id="userinput">
-          <input type="text" id="title" placeholder="Book Title"/>
-        <br />
-          <input type="text" id="link" placeholder="URL"/>
-        <br />
-        <button type="submit" id="addbook">Add New</button>
-      </form> -->
+      <h2><i>The latest Technologoes News!</i></h2>   
 
 
       <div id="results">
-        <table id="unread">
-              <tr><th>Title</th><th>Author</th><th>Read/Unread</th></tr>
-        </table>
-        <table id="read">
-              <tr><th>Title</th><th>Author</th><th>Read/Unread</th></tr>
-        </table>
+
+        <form id="googlenews">  
+            <table>
+                <tr><th>Title</th><th>Link</th></tr>
+            </table>      
+            <button type="googlesubmit" id="googlebutton">Get Gooogle News!</button>
+        </form>
+        
+        <form id="nytimesnews"> 
+            <table>
+                <tr><th>Title</th><th>Author</th></tr>
+             </table>
+             <button type="nysubmit" id="nybutton">Get Gooogle News!</button>
+        </form>
+          
+        
+
       </div>
+
+      <div id="comments">
+        <form id="userinput">       
+          <input type="text" id="comment" placeholder="add comment.."/>
+        <br/>
+        <button type="submit" id="addcomment">Add New Comment</button>
+      </form>
+
+      </div>
+
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="app.js"></script>

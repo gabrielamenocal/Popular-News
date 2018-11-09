@@ -1,77 +1,74 @@
 // Click Events
 
 // Click event to add a book to the db
-$("#addbook").on("click", function() {
+$("#addcomment").on("click", function() {
     $.ajax({
       type: "POST",
-      url: "/submit",
+      url: "/comments",
       dataType: "json",
       data: {
-        title: $("#title").val(),
-        author: $("#author").val(),
+        comment: $("#comment").val(),
         created: Date.now()
       }
     })
       .then(function(data) {
         console.log(data);
-        getUnread();
-        $("#author").val("");
-        $("#title").val("");
+        // getUnread();
+        $("##addcomment").val("");
+       
       }
       );
     return false;
   });
   
-  // Click event to mark a book as read
-  $(document).on("click", ".markread", function() {
+  $(document).on("click", "#googlebutton", function() {
     var thisId = $(this).attr("data-id");
     $.ajax({
       type: "GET",
-      url: "/markread/" + thisId
+      url: "/google" + thisId
     });
     $(this).parents("tr").remove();
-    getRead();
+    getGoogle();
   });
   
   // Click event to mark a book as not read
-  $(document).on("click", ".markunread", function() {
+  $(document).on("click", "#nybutton", function() {
     var thisId = $(this).attr("data-id");
     $.ajax({
       type: "GET",
-      url: "/markunread/" + thisId
+      url: "/nytimes" + thisId
     });
     $(this).parents("tr").remove();
-    getUnread();
+    getNYtimes();
   });
   
   
   // Functions
   
-  // Load unread books and render them to the screen
-  function getUnread() {
-    $("#unread").empty();
-    $.getJSON("/unread", function(data) {
+ 
+  function getGoogle() {
+    $("#googlenews").empty();
+    $.getJSON("/google", function(data) {
       for (var i = 0; i < data.length; i++) {
-        $("#unread").prepend("<tr><td>" + data[i].title + "</td><td>" + data[i].author +
-          "</td><td><button class='markread' data-id='" + data[i]._id + "'>Mark Read</button></td></tr>");
+        $("#unread").prepend("<tr><td>" + data[i].title + "</td><td>" + data[i].link +
+          "</td><td><button class='google' data-id='" + data[i]._id + "'>Remove</button></td></tr>");
       }
-      $("#unread").prepend("<tr><th>Title</th><th>Author</th><th>Read/Unread</th></tr>");
+      $("#googlenews").prepend("<tr><th>Title</th><th>Link</th></tr>");
     });
   }
   
-  // Load read books and render them to the screen
-  function getRead() {
-    $("#read").empty();
-    $.getJSON("/read", function(data) {
+  function getNYtimes() {
+    $("#nytimesnews").empty();
+    $.getJSON("/nytimes", function(data) {
       for (var i = 0; i < data.length; i++) {
         $("#read").prepend("<tr><td>" + data[i].title + "</td><td>" + data[i].author +
-          "</td><td><button class='markunread' data-id='" + data[i]._id + "'>Mark Unread</button></td></tr>");
+          "</td><td><button class='nytimes' data-id='" + data[i]._id + "'>Remove</button></td></tr>");
       }
-      $("#read").prepend("<tr><th>Title</th><th>Author</th><th>Read/Unread</th></tr>");
+      $("#nytimesnews").prepend("<tr><th>Title</th><th>Link</th></tr>");
     });
   }
   
-  // Calling our functions
-  getUnread();
-  getRead();
+ 
+  getGoogle();
+  getNYtimes();
   

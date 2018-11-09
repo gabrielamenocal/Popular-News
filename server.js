@@ -4,7 +4,9 @@ var mongoose = require("mongoose");
 
 var PORT = 8080;
 
-var User = require("/.mongoose.js");
+var news = require("/.news.js");
+var comments = require("/.comments.js");
+
 
 var app = express ();
 
@@ -16,19 +18,37 @@ mongoose.connect("mongodb://localhost/userdb", { useNewUrlParser: true })
 
 
 // Route to post our form submission to mongoDB via mongoose
-app.post("/submit", function(req, res) {
-  // Create a new user using req.body
-  User.create(req.body)
-    .then(function(dbUser) {
-      // If saved successfully, send the the new User document to the client
-      res.json(dbUser);
+app.post("/comments", function(req, res) {
+  comments.create(req.body)
+    .then(function(dbcomments) {
+      res.json(dbcomments);
     })
     .catch(function(err) {
-      // If an error occurs, send the error to the client
       res.json(err);
     });
 });
+
+app.get("/google", function(req, res) {
+  db.news.find({ source: "googlenews"}, function(error, found) {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      res.json(found);
+    }
+  });
+});
  
+app.get("/nytimes", function(req, res) {
+  db.news.find({ source: "nytimes" }, function(error, found) {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      res.json(found);
+    }
+  });
+});
 
 console.log("\n***********************************\n" +
             "Grabbing every thread name and link\n" +
