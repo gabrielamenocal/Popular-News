@@ -16,7 +16,7 @@ var UserSchema = new Schema({
 
 });
 
-var news = mongoose.model("comments", UserSchema);
+var comments = mongoose.model("comments", UserSchema);
 
 
 module.exports = comments;

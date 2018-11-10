@@ -1,23 +1,24 @@
 var cheerio = require("cheerio");
 var axios = require("axios");
 var mongoose = require("mongoose");
+var express = require("express");
 
 var PORT = 8080;
 
-var news = require("/.news.js");
-var comments = require("/.comments.js");
+var news = require("./news.js");
+var comments = require("./comments.js");
 
 
-var app = express ();
+var app = express();
 
-app.use(logger("dev"));
+// app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 mongoose.connect("mongodb://localhost/userdb", { useNewUrlParser: true })
 
 
-// Route to post our form submission to mongoDB via mongoose
+
 app.post("/comments", function(req, res) {
   comments.create(req.body)
     .then(function(dbcomments) {
@@ -29,7 +30,7 @@ app.post("/comments", function(req, res) {
 });
 
 app.get("/google", function(req, res) {
-  db.news.find({ source: "googlenews"}, function(error, found) {
+  news.find({ source: "googlenews"}, function(error, found) {
     if (error) {
       console.log(error);
     }
@@ -39,8 +40,8 @@ app.get("/google", function(req, res) {
   });
 });
  
-app.get("/nytimes", function(req, res) {
-  db.news.find({ source: "nytimes" }, function(error, found) {
+app.get("/bbc", function(req, res) {
+  news.find({ source: "bbc" }, function(error, found) {
     if (error) {
       console.log(error);
     }
@@ -55,41 +56,54 @@ console.log("\n***********************************\n" +
             "from New York Times and Google News's Technology website section:" +
             "\n***********************************\n");
 
-axios.get("https://www.nytimes.com/section/technology").then(function(response) {  
-  var $ = cheerio.load(response.data); 
-  var resultsNYtimes = [];  
-  $("h2.headline").each(function(i, element) {
-    var title = $(element).text();   
-    var link = $(element).children().attr("href");
-    resultsNYtimes.push({
-      title: title,
-      link: link,
-      source:"nytimes"
-    });
-  });
-  console.log("New York Times: \n" + resultsNYtimes);
-  console.log(resultsNYtimes);
 
+app.get("/scrapbbc", function(req, res){
+      axios.get("https://www.bbc.com/news/technology").then(function(response) {  
+      var $ = cheerio.load(response.data); 
+      var resultsNYtimes = [];  
+      $(".pigeon-item").each(function(i, element) {
+        var title = $(element).children("a").children("h3").children("span").text();   
+        var link = $(element).children().attr("href");
+        if(title && link){
+          resultsNYtimes.push({
+            title: title,
+            link: "https://www.bbc.com/news/technology" + link,
+            source:"bbc"
+          });
+          var article = new news({title: title,
+            link: "https://www.bbc.com/news/technology" + link,
+            source:"bbc"})
+            article.save();
+          }
+
+      });
+    res.send(resultsNYtimes);
+    });
 });
+
+
 
 // Google News
-
-axios.get("https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pEUVNnQVAB?hl=en-CA&gl=CA&ceid=CA%3Aen").then(function(response) {  
-  var $ = cheerio.load(response.data); 
-  var resultsGoogle = [];  
-  $("a.VDXfz").each(function(i, element) {
-    var title = $(element).text();   
-    var link = $(element).attr("href");
-    resultsGoogle.push({
-      title: title,
-      link: link,
-      source: "googlenews"
+app.get("/scrapgoogle", function(req, res){
+      axios.get("https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pEUVNnQVAB?hl=en-CA&gl=CA&ceid=CA%3Aen").then(function(response) {  
+      var $ = cheerio.load(response.data); 
+      var resultsGoogle = [];  
+      $("a.VDXfz").each(function(i, element) {
+        var title = $(element).text();   
+        var link = $(element).attr("href");
+        resultsGoogle.push({
+          title: title,
+          link: link,
+          source: "googlenews"
+        });
+      });
+      res.send(resultsGoogle);
     });
-  });
-  console.log("Google Results: \n" + resultsGoogle);
-  console.log(resultsGoogle);
+})
 
-});
+
+
+
 
 // Start the server
 app.listen(PORT, function() {
