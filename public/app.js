@@ -1,6 +1,4 @@
-// Click Events
 
-// Click event to add a book to the db
 $("#addcomment").on("click", function() {
     $.ajax({
       type: "POST",
@@ -12,9 +10,8 @@ $("#addcomment").on("click", function() {
       }
     })
       .then(function(data) {
-        console.log(data);
-        // getUnread();
-        $("##addcomment").val("");
+        console.log(data);      
+        $("#comment").val("");
        
       }
       );
@@ -28,18 +25,18 @@ $("#addcomment").on("click", function() {
       url: "/google" + thisId
     });
     $(this).parents("tr").remove();
-    getGoogle();
+    // getGoogle();
   });
   
   // Click event to mark a book as not read
-  $(document).on("click", "#nybutton", function() {
+  $(document).on("click", "#bbcbutton", function() {
     var thisId = $(this).attr("data-id");
     $.ajax({
       type: "GET",
-      url: "/nytimes" + thisId
+      url: "/bbc" + thisId
     });
     $(this).parents("tr").remove();
-    getNYtimes();
+    // getBBC();
   });
   
   
@@ -47,28 +44,30 @@ $("#addcomment").on("click", function() {
   
  
   function getGoogle() {
-    $("#googlenews").empty();
+    $("#google").empty();
     $.getJSON("/google", function(data) {
       for (var i = 0; i < data.length; i++) {
-        $("#unread").prepend("<tr><td>" + data[i].title + "</td><td>" + data[i].link +
-          "</td><td><button class='google' data-id='" + data[i]._id + "'>Remove</button></td></tr>");
+        $("#google").prepend("<tr><td>" + data[i].title + "</td><td>" + data[i].link +
+          "</td><td>&nbsp;&nbsp;<button class='btn btn-warning' data-id='" + data[i]._id + "'>Remove</button></td></tr>");
       }
-      $("#googlenews").prepend("<tr><th>Title</th><th>Link</th></tr>");
+      $("#google").prepend("<tr><th>Title</th><th>Link</th></tr>");
     });
+    // getGoogle()
   }
   
-  function getNYtimes() {
-    $("#nytimesnews").empty();
-    $.getJSON("/nytimes", function(data) {
+  function getBBC() {
+    $("#bbc").empty();
+    $.getJSON("/bbc", function(data) {
       for (var i = 0; i < data.length; i++) {
-        $("#read").prepend("<tr><td>" + data[i].title + "</td><td>" + data[i].author +
-          "</td><td><button class='nytimes' data-id='" + data[i]._id + "'>Remove</button></td></tr>");
+        $("#bbc").prepend("<tr><td>" + data[i].title + "</td><td>" + data[i].author +
+          "</td><td>&nbsp;&nbsp;<button class='btn btn-warning' data-id='" + data[i]._id + "'>Remove</button></td></tr>");
       }
-      $("#nytimesnews").prepend("<tr><th>Title</th><th>Link</th></tr>");
+      $("#bbc").prepend("<tr><th>Title</th><th>Link</th></tr>");
     });
+    // getBBC();  
   }
   
  
   getGoogle();
-  getNYtimes();
+  getBBC();
   

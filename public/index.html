@@ -3,75 +3,126 @@
   <head>
     <meta charset="UTF-8">
     <title>Tech News </title>
-    <style>
-      #unread, #read {
-        width: 40%;
-        background-color: antiquewhite;
-      }
-      #unread { float: left; }
-      #read { float: right; }
-      table, td {
-        border-width: 1px;
-        border-style: solid;
-        border-color: black;
-      }
-      #wrapper {
-        width: 960px;
-        padding-top: 10%;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-      }
-      body {
-        font-family: sans-serif;
-        background-color: lightsalmon;
-      }
-      #results { margin-top: 50px; }
-      #userinput { font-size: 24px; }
-      input {
-        width: 50%;
-        height: 36px;
-        font-size: 24px;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="wrapper">
-      <h1>Technology at your reach</h1>
-      <h2><i>The latest Technologoes News!</i></h2>   
-
-
-      <div id="results">
-
-        <form id="googlenews">  
-            <table>
-                <tr><th>Title</th><th>Link</th></tr>
-            </table>      
-            <button type="googlesubmit" id="googlebutton">Get Gooogle News!</button>
-        </form>
-        
-        <form id="nytimesnews"> 
-            <table>
-                <tr><th>Title</th><th>Author</th></tr>
-             </table>
-             <button type="nysubmit" id="nybutton">Get Gooogle News!</button>
-        </form>
-          
-        
-
-      </div>
-
-      <div id="comments">
-        <form id="userinput">       
-          <input type="text" id="comment" placeholder="add comment.."/>
-        <br/>
-        <button type="submit" id="addcomment">Add New Comment</button>
-      </form>
-
-      </div>
-
-    </div>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href = "/style.css"> 
+
+    
+  </head>
+
+  <body>
+
+    <header>      
+        <nav class="navbar navbar-light bg-light card-header">
+            <span class="navbar-brand mb-0 h1"><i> </i><a href="/"> <i class="fas fa-home"></i>  </a>  </span>
+        </nav>
+    </header>
+
+    <main>
+
+        <div class="container-fluid" >
+            
+      
+            <div class="container" id="results">
+      
+                <h1>BBC and Google News</h1>
+                <p>The latest news getting from BBC news website and Google News website</p>                 
+      
+      
+                <div id="google"> 
+      
+                    <h2 class="jumbotron">Google News</h2>
+        
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>News</th>
+                            <th>Link</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                  
+                     <button class="btn btn-primary" id="googlebutton">Get Google News!</button>
+                </div>
+      
+               
+      
+             
+              <br>         <br>          <br> 
+      
+      
+              <div id="bbc"> 
+      
+                  <h2 class="jumbotron">BBC News</h2>
+      
+                  <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>News</th>
+                          <th style="color:aliceblue">Link</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                
+                   <button class="btn btn-primary" id="bbcbutton">Get BBC News!</button>
+              </div>
+                
+              
+      
+            </div>
+      
+            <br>         <br>          <br> 
+      
+      
+            <div id="comments">
+              <form id="userinput">       
+                <input type="text" id="comment" placeholder="add comment.."/>
+              <br/>
+              <button class="btn btn-primary" type="submit" id="addcomment">Add New Comment</button>
+            </form>
+      
+            </div>
+      
+          </div>
+
+    </main>
+
+    <footer>      
+        <div class="card-footer text-muted">
+            <p > <strong> Copyright © 2018 by Gabriela Elizabeth Menocal Cover </strong>  </p>
+        </div>
+    </footer>
+   
     <script src="app.js"></script>
   </body>
 </html>

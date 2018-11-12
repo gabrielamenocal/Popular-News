@@ -53,7 +53,7 @@ app.get("/bbc", function(req, res) {
 
 console.log("\n***********************************\n" +
             "Grabbing every thread name and link\n" +
-            "from New York Times and Google News's Technology website section:" +
+            "from BBC and Google News's Technology website section:" +
             "\n***********************************\n");
 
 

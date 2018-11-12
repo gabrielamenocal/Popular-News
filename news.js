@@ -17,7 +17,7 @@ var UserSchema = new Schema({
     type: String,
   },
  
-  newsCreated: {
+  created: {
     type: Date,
     default: Date.now
   }
