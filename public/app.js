@@ -1,4 +1,10 @@
 
+
+
+getComments();
+getGoogle();
+getBBC();
+
 $("#addcomment").on("click", function() {
     $.ajax({
       type: "POST",
@@ -11,12 +17,15 @@ $("#addcomment").on("click", function() {
     })
       .then(function(data) {
         console.log(data);      
-        $("#comment").val("");
-       
+        $("#comment").val("");       
       }
       );
+      getComments();
     return false;
   });
+
+
+  
   
   $(document).on("click", "#googlebutton", function() {
     var thisId = $(this).attr("data-id");
@@ -28,7 +37,7 @@ $("#addcomment").on("click", function() {
     // getGoogle();
   });
   
-  // Click event to mark a book as not read
+ 
   $(document).on("click", "#bbcbutton", function() {
     var thisId = $(this).attr("data-id");
     $.ajax({
@@ -44,8 +53,8 @@ $("#addcomment").on("click", function() {
   
  
   function getGoogle() {
-    $("#google").empty();
     $.getJSON("/google", function(data) {
+      console.log(data);
       for (var i = 0; i < data.length; i++) {
         $("#google").prepend("<tr><td>" + data[i].title + "</td><td>" + data[i].link +
           "</td><td>&nbsp;&nbsp;<button class='btn btn-warning' data-id='" + data[i]._id + "'>Remove</button></td></tr>");
@@ -56,10 +65,9 @@ $("#addcomment").on("click", function() {
   }
   
   function getBBC() {
-    $("#bbc").empty();
     $.getJSON("/bbc", function(data) {
       for (var i = 0; i < data.length; i++) {
-        $("#bbc").prepend("<tr><td>" + data[i].title + "</td><td>" + data[i].author +
+        $("#bbc").prepend("<tr><td>" + data[i].title + "</td><td>" + data[i].link +
           "</td><td>&nbsp;&nbsp;<button class='btn btn-warning' data-id='" + data[i]._id + "'>Remove</button></td></tr>");
       }
       $("#bbc").prepend("<tr><th>Title</th><th>Link</th></tr>");
@@ -67,7 +75,16 @@ $("#addcomment").on("click", function() {
     // getBBC();  
   }
   
- 
-  getGoogle();
-  getBBC();
+   
+  function getComments() {
+    $.getJSON("/comments", function(data) {
+      for (var i = 0; i < data.length; i++) {
+        $("#checkcomments").prepend("<tr><td>" + data[i].comment + "</td><td>" + data[i].created +
+          "</td><td>&nbsp;&nbsp;<button class='btn btn-warning' data-id='" + data[i]._id + "'>Remove</button></td></tr>");
+      }
+      $("#checkcomments").prepend("<tr><th>TComment</th><th>Date</th></tr>");
+    });
+    // getBBC();  
+  }
+  
   

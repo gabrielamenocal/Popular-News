@@ -21,16 +21,20 @@ mongoose.connect("mongodb://localhost/userdb", { useNewUrlParser: true })
 
 app.post("/comments", function(req, res) {
   comments.create(req.body)
-    .then(function(dbcomments) {
-      res.json(dbcomments);
+    .then(function(comments) {
+      res.json(comments);
     })
     .catch(function(err) {
       res.json(err);
     });
 });
 
+app.get("/comments", function(req, resp){
+  comments.find();
+})
+
 app.get("/google", function(req, res) {
-  news.find({ source: "googlenews"}, function(error, found) {
+  news.find({ source: "google"}, function(error, found) {
     if (error) {
       console.log(error);
     }
@@ -60,22 +64,21 @@ console.log("\n***********************************\n" +
 app.get("/scrapbbc", function(req, res){
       axios.get("https://www.bbc.com/news/technology").then(function(response) {  
       var $ = cheerio.load(response.data); 
-      var resultsNYtimes = [];  
+      var resultsBBC = [];  
       $(".pigeon-item").each(function(i, element) {
         var title = $(element).children("a").children("h3").children("span").text();   
         var link = $(element).children().attr("href");
         if(title && link){
-          resultsNYtimes.push({
+          resultsBBC.push({
             title: title,
             link: "https://www.bbc.com/news/technology" + link,
             source:"bbc"
           });
-          var article = new news({title: title,
+          var news = new news({title: title,
             link: "https://www.bbc.com/news/technology" + link,
             source:"bbc"})
-            article.save();
+            news.save();
           }
-
       });
     res.send(resultsNYtimes);
     });
@@ -91,18 +94,22 @@ app.get("/scrapgoogle", function(req, res){
       $("a.VDXfz").each(function(i, element) {
         var title = $(element).text();   
         var link = $(element).attr("href");
-        resultsGoogle.push({
-          title: title,
-          link: link,
-          source: "googlenews"
-        });
+        if(title && link){
+          resultsGoogle.push({
+            title: title,
+            link: link,
+            source: "google"
+          });          
+        }
+        var news = new news ({
+          link: "https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pEUVNnQVAB?hl=en-CA&gl=CA&ceid=CA%3Aen",
+          source:"google"
+        })
+        news.save();       
       });
       res.send(resultsGoogle);
     });
 })
-
-
-
 
 
 // Start the server
