@@ -21,16 +21,34 @@ thead {
 
 td {
   text-align: center;
-  color: black
+  color: blue;
 }
 .jumbotron{
   background-image: url("https://ak7.picdn.net/shutterstock/videos/287197/thumb/1.jpg");
   color: white;
 }
 
+header {
+  background-image: url("https://i.makeagif.com/media/11-12-2015/hqzKhq.gif");
+}
+
+footer {
+  background-image: url("https://i.makeagif.com/media/11-12-2015/hqzKhq.gif");
+  color: aliceblue;
+}
+
 i{
   color: white;
 }
+
+p{
+  color: aliceblue;
+}
+
+main{
+  color: blue;
+}
+
 
 }
   table, td {

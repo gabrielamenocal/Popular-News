@@ -5,7 +5,7 @@ var express = require("express");
 
 var PORT = 8080;
 
-var news = require("./news.js");
+var News = require("./news.js");
 var comments = require("./comments.js");
 
 
@@ -29,12 +29,31 @@ app.post("/comments", function(req, res) {
     });
 });
 
-app.get("/comments", function(req, resp){
-  comments.find();
+app.get("/comments", function(req, res){
+  comments.find()
+  .then(function(comments) {
+    res.json(comments);
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
 })
 
+
+app.get("/deletecomments/:id", function(req, res){
+  console.log(req.params.id);
+  comments.remove({_id: req.params.id})
+  .then(function(data) {
+    res.json(cdata);
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
+})
+
+
 app.get("/google", function(req, res) {
-  news.find({ source: "google"}, function(error, found) {
+  News.find({ source: "google"}, function(error, found) {
     if (error) {
       console.log(error);
     }
@@ -45,7 +64,7 @@ app.get("/google", function(req, res) {
 });
  
 app.get("/bbc", function(req, res) {
-  news.find({ source: "bbc" }, function(error, found) {
+  News.find({ source: "bbc" }, function(error, found) {
     if (error) {
       console.log(error);
     }
@@ -54,6 +73,19 @@ app.get("/bbc", function(req, res) {
     }
   });
 });
+
+
+app.get("/deletearticle/:id", function(req, res){
+  console.log(req.params.id);
+  News.remove({_id: req.params.id})
+  .then(function(data) {
+    res.json(data);
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
+})
+
 
 console.log("\n***********************************\n" +
             "Grabbing every thread name and link\n" +
@@ -74,13 +106,13 @@ app.get("/scrapbbc", function(req, res){
             link: "https://www.bbc.com/news/technology" + link,
             source:"bbc"
           });
-          var news = new news({title: title,
+          var news = new News({title: title,
             link: "https://www.bbc.com/news/technology" + link,
             source:"bbc"})
             news.save();
           }
       });
-    res.send(resultsNYtimes);
+    res.send(resultsBBC);
     });
 });
 
@@ -94,14 +126,15 @@ app.get("/scrapgoogle", function(req, res){
       $("a.VDXfz").each(function(i, element) {
         var title = $(element).text();   
         var link = $(element).attr("href");
-        if(title && link){
+        if(title || link){
           resultsGoogle.push({
             title: title,
             link: link,
             source: "google"
           });          
         }
-        var news = new news ({
+        var news = new News ({
+          title: title,
           link: "https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pEUVNnQVAB?hl=en-CA&gl=CA&ceid=CA%3Aen",
           source:"google"
         })
@@ -110,6 +143,21 @@ app.get("/scrapgoogle", function(req, res){
       res.send(resultsGoogle);
     });
 })
+
+
+app.get("/cleargoogle", function(req, res){
+  News.remove({ source: "google" }, function(error, found) {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      res.json(found);
+    }
+  });
+
+
+})
+
 
 
 // Start the server

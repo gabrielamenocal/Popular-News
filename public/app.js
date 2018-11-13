@@ -39,11 +39,14 @@ $("#addcomment").on("click", function() {
   
  
   $(document).on("click", "#bbcbutton", function() {
-    var thisId = $(this).attr("data-id");
+    // var thisId = $(this).attr("data-id");
+    console.log("works");
     $.ajax({
       type: "GET",
-      url: "/bbc" + thisId
-    });
+      url: "/scrapbbc" 
+    }).then(function(){
+      location.reload();
+    })
     $(this).parents("tr").remove();
     // getBBC();
   });
@@ -78,6 +81,7 @@ $("#addcomment").on("click", function() {
    
   function getComments() {
     $.getJSON("/comments", function(data) {
+      $("#checkcomments").empty();
       for (var i = 0; i < data.length; i++) {
         $("#checkcomments").prepend("<tr><td>" + data[i].comment + "</td><td>" + data[i].created +
           "</td><td>&nbsp;&nbsp;<button class='btn btn-warning' data-id='" + data[i]._id + "'>Remove</button></td></tr>");
@@ -86,5 +90,27 @@ $("#addcomment").on("click", function() {
     });
     // getBBC();  
   }
+
+  $(document).on("click", ".btn-warning", function() {
+    var thisId = $(this).attr("data-id");
+    $.ajax({
+      type: "GET",
+      url: "/deletecomments/" + thisId
+    }).then(function(){
+      location.reload();
+    })   
+  });
+  
+  $(document).on("click", ".btn-warning", function() {
+    var thisId = $(this).attr("data-id");
+    $.ajax({
+      type: "GET",
+      url: "/deletearticle/" + thisId
+    }).then(function(){
+      location.reload();
+    })   
+  });
+  
+  
   
   
