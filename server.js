@@ -3,7 +3,36 @@ var axios = require("axios");
 var mongoose = require("mongoose");
 var express = require("express");
 
-var PORT = 8080;
+// ****************MONGO CONNECTION TO HEROKU ******************
+
+// var MongoClient  = ("mongodb").MongoClient,format=require('util').format;
+
+
+// MongoClient.connect("ds033679.mlab.com:33679/news -u <dbuser> -p <dbpassword>", function (err,db){
+
+//         if(err){
+//           throw err;
+//         }
+//         else{
+//           console.log("connected");
+
+//         }
+
+//         db.close();
+
+// })
+
+
+
+
+
+
+
+  // **************************************************************
+
+var PORT = process.env.PORT|| 8080;
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/userdb";
+
 
 var News = require("./news.js");
 var comments = require("./comments.js");
@@ -15,7 +44,7 @@ var app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
-mongoose.connect("mongodb://localhost/userdb", { useNewUrlParser: true })
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
 
 
 
